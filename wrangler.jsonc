@@ -32,10 +32,26 @@
       "database_id": "32196d92-7cd0-4563-bcca-11b6bb60d36a"
     }
   ],
+  "r2_buckets": [
+    {
+      "binding": "BUCKET",
+      "bucket_name": "pipeline"
+    }
+  ],
   "analytics_engine_datasets": [
     {
       "binding": "ANALYTICS",
       "dataset": "ANALYTICS"
+    }
+  ],
+  "ratelimits": [
+    {
+      "name": "RATE_LIMITER",
+      "namespace_id": "1001",
+      "simple": {
+        "limit": 1500,
+        "period": 60
+      }
     }
   ]
 }
