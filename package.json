@@ -9,10 +9,16 @@
     "lint": "eslint .",
     "preview": "npm run build && vite preview",
     "deploy": "npm run cf-typegen && npm run build && wrangler deploy",
-    "cf-typegen": "wrangler types"
+    "cf-typegen": "wrangler types",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate:local": "wrangler d1 migrations apply cybercoderbd --local",
+    "db:migrate:remote": "wrangler d1 migrations apply cybercoderbd --remote",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.0",
+    "@hono/zod-validator": "^0.7.6",
+    "@marsidev/react-turnstile": "^1.5.0",
     "drizzle-orm": "^0.45.2",
     "hono": "^4.12.23",
     "dotenv": "^17.4.2",
@@ -21,7 +27,7 @@
     "react-dom": "^19.2.6",
     "react-router-dom": "^7.15.1",
     "tailwindcss": "^4.3.0",
-    "zod": "^4.4.3"
+    "zod": "^3.24.4"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.38.0",
@@ -29,6 +35,8 @@
     "@types/node": "^24.12.4",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "@types/cloudflare-turnstile": "^0.2.2",
+    "@tailwindcss/typography": "^0.5.19",
     "@vitejs/plugin-react": "^6.0.1",
     "drizzle-kit": "^0.31.10",
     "eslint": "^10.3.0",
