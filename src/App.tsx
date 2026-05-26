@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { 
-  Download, Search, AlertCircle, PlayCircle, FileText, 
-  ChevronRight, CheckCircle2, Zap, Shield, Globe2, 
+  Download, Search, AlertCircle, PlayCircle, Zap, Shield, Globe2, 
   HelpCircle, ArrowRight
 } from 'lucide-react';
 
