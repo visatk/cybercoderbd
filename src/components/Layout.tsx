@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
-import { Download, Sparkles, Menu, X } from 'lucide-react';
+import { Download, Sparkles, Menu, X, Send } from 'lucide-react';
 import OrbBackground from './OrbBackground';
 
 /* ── Nav config ─────────────────────────────────────────────────── */
@@ -142,6 +142,16 @@ function Navbar() {
 
           {/* ── Right actions ── */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+            <a 
+              href="https://t.me/drkingbd" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="btn-secondary hide-sm" 
+              style={{ padding: '6px 12px', fontSize: '0.75rem', gap: 6, borderColor: 'rgba(56, 189, 248, 0.3)', color: '#7dd3fc', background: 'rgba(56, 189, 248, 0.1)' }}
+            >
+              <Send style={{ width: 12, height: 12 }} />
+              Join Telegram
+            </a>
             <span className="badge badge-purple hide-sm" style={{ fontSize: '0.65rem' }}>
               <Sparkles style={{ width: 9, height: 9 }} /> v2.1
             </span>
@@ -215,6 +225,11 @@ function Navbar() {
             <NavLink to="/privacy" onClick={() => setOpen(false)} style={{ padding: '9px 12px', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--text-subtle)', borderRadius: 'var(--r-sm)', textDecoration: 'none', display: 'block' }}>Privacy</NavLink>
             <NavLink to="/terms"   onClick={() => setOpen(false)} style={{ padding: '9px 12px', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--text-subtle)', borderRadius: 'var(--r-sm)', textDecoration: 'none', display: 'block' }}>Terms</NavLink>
             <NavLink to="/contact" onClick={() => setOpen(false)} style={{ padding: '9px 12px', fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--text-subtle)', borderRadius: 'var(--r-sm)', textDecoration: 'none', display: 'block' }}>Contact</NavLink>
+            <div className="divider" style={{ margin: '6px 0' }} />
+            <a href="https://t.me/drkingbd" target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '9px 12px', fontSize: 'var(--text-sm)', fontWeight: 600, color: '#7dd3fc', borderRadius: 'var(--r-sm)', textDecoration: 'none', background: 'rgba(56, 189, 248, 0.08)' }}>
+              <Send style={{ width: 14, height: 14 }} />
+              Join Telegram
+            </a>
           </div>
         )}
       </nav>
@@ -246,9 +261,20 @@ function Footer() {
               </div>
               <span style={{ fontFamily: 'var(--font-head)', fontWeight: 900, color: 'var(--text)', fontSize: '0.95rem', letterSpacing: '-0.02em' }}>SubFetch</span>
             </Link>
-            <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-muted)', lineHeight: 1.7, maxWidth: '22rem' }}>
+            <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-muted)', lineHeight: 1.7, maxWidth: '22rem', marginBottom: '1.25rem' }}>
               Free subtitle downloader for YouTube, Vimeo, and Dailymotion. Download SRT, VTT, or TXT — no account needed.
             </p>
+            <a 
+              href="https://t.me/drkingbd"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: '0.8rem', fontWeight: 600, color: '#7dd3fc', textDecoration: 'none', background: 'rgba(56, 189, 248, 0.08)', padding: '6px 14px', borderRadius: 'var(--r-full)', border: '1px solid rgba(56, 189, 248, 0.2)', transition: 'background 0.2s, transform 0.2s' }}
+              onMouseEnter={e => { (e.currentTarget.style.background = 'rgba(56, 189, 248, 0.15)'); e.currentTarget.style.transform = 'translateY(-1px)'; }}
+              onMouseLeave={e => { (e.currentTarget.style.background = 'rgba(56, 189, 248, 0.08)'); e.currentTarget.style.transform = 'translateY(0)'; }}
+            >
+              <Send style={{ width: 13, height: 13 }} />
+              Follow @drkingbd on Telegram
+            </a>
           </div>
 
           {/* Link columns */}
