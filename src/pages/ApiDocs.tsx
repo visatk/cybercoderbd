@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Code2, Zap, Shield, Copy, CheckCircle2, ChevronDown, ExternalLink } from 'lucide-react';
+import { Code2, Zap, Shield, Copy, CheckCircle2, ExternalLink } from 'lucide-react';
 import Layout from '../components/Layout';
 import { usePageMeta } from '../hooks/usePageMeta';
 

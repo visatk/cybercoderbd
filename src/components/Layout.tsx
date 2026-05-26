@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NavLink, Link, useLocation } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { Download, Sparkles, Menu, X } from 'lucide-react';
 import OrbBackground from './OrbBackground';
 
@@ -46,7 +46,6 @@ function NavbarLink({ to, label }: { to: string; label: string }) {
 
 function Navbar() {
   const [open, setOpen] = useState(false);
-  const { pathname } = useLocation();
 
   return (
     <header role="banner">

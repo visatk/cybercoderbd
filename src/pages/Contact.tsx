@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Mail, MessageSquare, Github, Twitter, CheckCircle2, AlertCircle, Loader2, ChevronDown } from 'lucide-react';
+import { Mail, MessageSquare, GitBranch, MessageCircle, CheckCircle2, AlertCircle, Loader2, ChevronDown } from 'lucide-react';
 import Layout from '../components/Layout';
 import { usePageMeta } from '../hooks/usePageMeta';
 
@@ -241,7 +241,7 @@ export default function Contact() {
                 <a href="https://github.com" target="_blank" rel="noopener noreferrer"
                   className="flex items-center gap-3 group p-3 rounded-xl hover:bg-white/5 transition-colors">
                   <div className="btn-primary w-9 h-9 shrink-0" style={{ borderRadius: 'var(--r-sm)', padding: 0 }}>
-                    <Github className="w-4 h-4" />
+                    <GitBranch className="w-4 h-4" />
                   </div>
                   <div>
                     <p className="text-xs font-bold" style={{ color: 'var(--text-muted)' }}>GitHub Issues</p>
@@ -254,7 +254,7 @@ export default function Contact() {
                 <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
                   className="flex items-center gap-3 group p-3 rounded-xl hover:bg-white/5 transition-colors">
                   <div className="btn-primary w-9 h-9 shrink-0" style={{ borderRadius: 'var(--r-sm)', padding: 0 }}>
-                    <Twitter className="w-4 h-4" />
+                    <MessageCircle className="w-4 h-4" />
                   </div>
                   <div>
                     <p className="text-xs font-bold" style={{ color: 'var(--text-muted)' }}>Twitter / X</p>
