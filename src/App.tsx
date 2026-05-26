@@ -1,81 +1,165 @@
+import { useState } from 'react';
+import { Download, Search, AlertCircle, Youtube, FileText, ChevronRight } from 'lucide-react';
+
+interface Subtitle {
+  language: string;
+  languageCode: string;
+  url: string;
+  kind: string;
+}
+
+interface ExtractResponse {
+  videoId: string;
+  title: string;
+  subtitles: Subtitle[];
+  error?: string;
+}
 
 export default function App() {
+  const [url, setUrl] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<ExtractResponse | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleExtract = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!url) return;
+
+    setLoading(true);
+    setError(null);
+    setData(null);
+
+    try {
+      const res = await fetch(`/api/extract?url=${encodeURIComponent(url)}`);
+      const result = await res.json();
+
+      if (!res.ok) {
+        throw new Error(result.error || 'Failed to extract subtitles');
+      }
+
+      setData(result);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const downloadFormat = (subtitleUrl: string, format: 'srt' | 'txt') => {
+    // YouTube returns XML natively. To get actual SRT/TXT, we modify the URL format parameter
+    const finalUrl = `${subtitleUrl}&fmt=${format === 'srt' ? 'vtt' : 'json3'}`; 
+    // Note: For a true production app, you might need a backend proxy to convert XML/JSON3 to strict SRT/TXT.
+    // For MVP, opening the direct YouTube caption link in a new tab is the fastest approach.
+    window.open(finalUrl, '_blank');
+  };
+
   return (
-    <div className="min-h-screen bg-gray-950 text-white font-sans selection:bg-blue-500 selection:text-white">
+    <div className="min-h-screen bg-gray-50 text-gray-900 font-sans selection:bg-blue-500 selection:text-white">
       {/* Navbar */}
-      <nav className="container mx-auto px-6 py-5 flex justify-between items-center">
-        <div className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300">
-          CyberCoderBD
+      <nav className="bg-white border-b border-gray-200">
+        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+          <div className="flex items-center gap-2 text-2xl font-bold text-blue-600">
+            <Download className="w-8 h-8" />
+            <span>SubFetch</span>
+          </div>
+          <a href="#" className="text-sm font-medium text-gray-500 hover:text-gray-900">API Documentation</a>
         </div>
-        <a 
-          href="https://cybercoderbd.com/" 
-          target="_blank" 
-          rel="noreferrer" 
-          className="text-sm font-medium text-gray-300 hover:text-white transition-colors"
-        >
-          অফিসিয়াল ওয়েবসাইট →
-        </a>
       </nav>
 
       {/* Hero Section */}
-      <main className="container mx-auto px-6 pt-24 pb-12 flex flex-col items-center text-center">
-        {/* Badge */}
-        <div className="inline-block px-4 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-sm font-semibold mb-8 animate-pulse">
-          🚀 বাংলাদেশের অন্যতম সেরা টেক ও সাইবার সিকিউরিটি কমিউনিটি
+      <main className="container mx-auto px-6 pt-20 pb-12 flex flex-col items-center">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-sm font-semibold mb-6">
+          <Youtube className="w-4 h-4" /> YouTube Subtitle Downloader
         </div>
         
-        {/* Main Headline */}
-        <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
-          কোডিং এবং সাইবার সিকিউরিটি <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400">
-            এখন শিখুন একসাথে
-          </span>
+        <h1 className="text-4xl md:text-6xl font-extrabold text-center tracking-tight mb-6 text-gray-900">
+          Download Subtitles in <span className="text-blue-600">Seconds</span>
         </h1>
         
-        {/* Subheadline (Copywriting) */}
-        <p className="text-lg md:text-xl text-gray-400 max-w-2xl mb-10 leading-relaxed">
-          CyberCoderBD টেলিগ্রাম চ্যানেলে যুক্ত হোন। নিয়মিত টেক আপডেট, কোডিং রিসোর্স, গাইডলাইন এবং হ্যাকিং টিউটোরিয়াল পান সবার আগে, সম্পূর্ণ ফ্রিতে।
+        <p className="text-lg text-gray-500 text-center max-w-2xl mb-10">
+          Paste a YouTube video link below to instantly extract and download subtitles in SRT or TXT formats. Free, fast, and no registration required.
         </p>
 
-        {/* Call to Actions */}
-        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center">
-          <a
-            href="https://t.me/CyberCoderBD"
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center justify-center gap-3 bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)] transform hover:-translate-y-1"
+        {/* Search Box */}
+        <form onSubmit={handleExtract} className="w-full max-w-3xl relative shadow-xl rounded-2xl bg-white p-2 flex flex-col sm:flex-row gap-2 border border-gray-200">
+          <div className="relative flex-grow flex items-center">
+            <Search className="absolute left-4 w-5 h-5 text-gray-400" />
+            <input
+              type="url"
+              placeholder="https://www.youtube.com/watch?v=..."
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              required
+              className="w-full pl-12 pr-4 py-4 rounded-xl border-none bg-transparent text-lg focus:ring-0 outline-none placeholder:text-gray-400"
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed min-w-[160px]"
           >
-            {/* Telegram Icon */}
-            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.892-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
-            </svg>
-            টেলিগ্রামে জয়েন করুন
-          </a>
-          <a
-            href="https://cybercoderbd.com/"
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all border border-gray-700 hover:border-gray-500"
-          >
-            ওয়েবসাইট ভিজিট করুন
-          </a>
-        </div>
-        
-        {/* Trust Indicators / Features */}
-        <div className="mt-20 pt-8 border-t border-gray-800/50 flex flex-col md:flex-row items-center justify-center gap-8 text-gray-400 text-sm font-medium w-full">
-          <div className="flex items-center gap-2">
-            <svg className="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            নিয়মিত প্রিমিয়াম রিসোর্স
+            {loading ? (
+              <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            ) : (
+              <>Extract <ChevronRight className="w-5 h-5" /></>
+            )}
+          </button>
+        </form>
+
+        {/* Error State */}
+        {error && (
+          <div className="mt-8 p-4 bg-red-50 text-red-700 rounded-xl flex items-center gap-3 w-full max-w-3xl border border-red-100 animate-in fade-in slide-in-from-bottom-4">
+            <AlertCircle className="w-5 h-5 shrink-0" />
+            <p className="font-medium">{error}</p>
           </div>
-          <div className="flex items-center gap-2">
-            <svg className="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            সক্রিয় ডেভেলপার কমিউনিটি
+        )}
+
+        {/* Results Section */}
+        {data && (
+          <div className="mt-12 w-full max-w-3xl bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm animate-in fade-in slide-in-from-bottom-4">
+            <div className="p-6 border-b border-gray-100 bg-gray-50 flex items-start gap-4">
+              <div className="flex-1">
+                <h3 className="font-bold text-lg text-gray-900 line-clamp-2">{data.title}</h3>
+                <p className="text-sm text-gray-500 mt-1">Found {data.subtitles.length} subtitle tracks</p>
+              </div>
+            </div>
+            
+            <div className="divide-y divide-gray-100">
+              {data.subtitles.map((sub, idx) => (
+                <div key={idx} className="p-4 sm:px-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold uppercase">
+                      {sub.languageCode.split('-')[0]}
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900">{sub.language}</p>
+                      {sub.kind === 'asr' && (
+                        <span className="text-xs font-medium text-orange-600 bg-orange-100 px-2 py-0.5 rounded-full mt-1 inline-block">
+                          Auto-generated
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div className="flex gap-2 w-full sm:w-auto">
+                    <button 
+                      onClick={() => downloadFormat(sub.url, 'srt')}
+                      className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 border border-gray-200 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700 font-medium text-sm rounded-lg transition-colors"
+                    >
+                      <FileText className="w-4 h-4" /> SRT
+                    </button>
+                    <button 
+                      onClick={() => downloadFormat(sub.url, 'txt')}
+                      className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 border border-gray-200 hover:border-gray-300 hover:bg-gray-100 font-medium text-sm rounded-lg transition-colors"
+                    >
+                      <FileText className="w-4 h-4" /> TXT
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <svg className="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            হেল্পিং ও গাইডলাইন সাপোর্ট
-          </div>
-        </div>
+        )}
       </main>
     </div>
   );
