@@ -28,7 +28,7 @@ export const dailymotionExtractor: Extractor = {
       if (response.status === 404) throw new Error('Dailymotion video not found.');
       if (!response.ok) throw new Error(`Dailymotion API returned HTTP ${response.status}.`);
 
-      const data = await response.json();
+      const data = await response.json() as any;
       const subtitleData = data?.subtitles?.data ?? [];
 
       if (subtitleData.length === 0) {
