@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { 
   Download, Search, AlertCircle, PlayCircle, Zap, Shield, Globe2, 
-  HelpCircle, ArrowRight
+  CheckCircle2, ArrowRight
 } from 'lucide-react';
 
 interface Subtitle {
