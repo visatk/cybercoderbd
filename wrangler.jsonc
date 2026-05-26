@@ -1,6 +1,6 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "cybercoderbd",
+	"name": "downsub",
 	"main": "worker/index.ts",
 	"compatibility_date": "2026-05-25",
 	"assets": {
@@ -18,40 +18,5 @@
 	"upload_source_maps": true,
 	"compatibility_flags": [
 		"nodejs_compat"
-	],
-	"ai": {
-    "binding": "AI"
-  },
-  "placement": {
-    "mode": "smart"
-  },
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "cybercoderbd",
-      "database_id": "32196d92-7cd0-4563-bcca-11b6bb60d36a"
-    }
-  ],
-  "r2_buckets": [
-    {
-      "binding": "BUCKET",
-      "bucket_name": "pipeline"
-    }
-  ],
-  "analytics_engine_datasets": [
-    {
-      "binding": "ANALYTICS",
-      "dataset": "ANALYTICS"
-    }
-  ],
-  "ratelimits": [
-    {
-      "name": "RATE_LIMITER",
-      "namespace_id": "1001",
-      "simple": {
-        "limit": 1500,
-        "period": 60
-      }
-    }
-  ]
+	]
 }
