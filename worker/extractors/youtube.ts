@@ -1,4 +1,4 @@
-import { Extractor, ExtractorResult } from './base';
+import type { Extractor, ExtractorResult } from './base';
 
 export const youtubeExtractor: Extractor = {
   id: 'youtube',
