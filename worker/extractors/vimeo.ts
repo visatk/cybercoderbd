@@ -1,4 +1,4 @@
-import { Extractor, ExtractorResult } from './base';
+import type { Extractor, ExtractorResult } from './base';
 
 export const vimeoExtractor: Extractor = {
   id: 'vimeo',
@@ -14,7 +14,8 @@ export const vimeoExtractor: Extractor = {
     const response = await fetch(`https://player.vimeo.com/video/${videoId}/config`);
     if (!response.ok) throw new Error('Failed to fetch Vimeo metadata');
     
-    const data = await response.json();
+    // Typecast as any to bypass strict type checking for external API response
+    const data = await response.json() as any;
     const tracks = data?.request?.text_tracks;
 
     if (!tracks || tracks.length === 0) {
